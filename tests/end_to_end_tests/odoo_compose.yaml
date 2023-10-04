@@ -1,0 +1,27 @@
+version: '3.1'
+
+networks:
+  end_to_end_tests_default:
+    external: true
+
+services:
+
+  odoo_web:
+    image: odoo:16.0
+    depends_on:
+      - odoo_db
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=odoo_db
+    networks:
+      - end_to_end_tests_default
+
+  odoo_db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    networks:
+      - end_to_end_tests_default
